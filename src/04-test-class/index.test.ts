@@ -51,11 +51,14 @@ describe('BankAccount', () => {
   });
 
   test('fetchBalance should return number in case if request did not failed', async () => {
-    // expect.assertions(1);
-    // const account = getBankAccount(1000);
-    // const operation = account.fetchBalance();
-    // await expect(operation).rejects.toEqual(null);
-    // await expect(operation).resolves.toEqual(1000);
+    expect.assertions(1);
+    const account = getBankAccount(1000);
+    const operation = await account.fetchBalance();
+    if (operation === null) {
+      expect(operation).toBe(null);
+    } else {
+      expect(typeof operation).toBe('number');
+    }
   });
 
   test('should set new balance if fetchBalance returned number', async () => {
