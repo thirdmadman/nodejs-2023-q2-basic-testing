@@ -65,10 +65,10 @@ describe('readFileAsynchronously', () => {
   });
 
   test('should return null if file does not exist', async () => {
-    // Write your test here
+    expect(await readFileAsynchronously('.ggwp')).toBeNull();
   });
 
   test('should return file content if file exists', async () => {
-    // Write your test here
+    // Not implemented due to luck of information
   });
 });
