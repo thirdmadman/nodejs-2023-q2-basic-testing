@@ -1,4 +1,5 @@
 // Uncomment the code below and write your tests
+import path from 'path';
 import { readFileAsynchronously, doStuffByTimeout, doStuffByInterval } from '.';
 
 describe('doStuffByTimeout', () => {
@@ -38,21 +39,29 @@ describe('doStuffByInterval', () => {
   });
 
   test('should set interval with provided callback and timeout', () => {
-    jest.spyOn(global, 'setInterval');
-    const readFile = async () =>
-      await readFileAsynchronously('../../package.json');
-    doStuffByInterval(readFile, 5000);
-    expect(setInterval).toHaveBeenCalledWith(readFile, 5000);
+    const func = jest.fn();
+    const spy = jest.spyOn(global, 'setInterval');
+    doStuffByInterval(func, 100);
+    expect(spy).toHaveBeenCalledWith(func, 100);
   });
 
   test('should call callback multiple times after multiple intervals', () => {
-    // Write your test here
+    const func = jest.fn();
+    const INTERVAL = 100;
+    doStuffByInterval(func, INTERVAL);
+    expect(func).not.toBeCalled();
+    jest.advanceTimersByTime(INTERVAL * 5);
+    expect(func).toHaveBeenCalledTimes(5);
   });
 });
 
 describe('readFileAsynchronously', () => {
   test('should call join with pathToFile', async () => {
-    // Write your test here
+    const pathToFile = '../../package.json';
+    const spy = jest.spyOn(path, 'join');
+    const readFile = async () => await readFileAsynchronously(pathToFile);
+    readFile();
+    expect(spy).toHaveBeenCalledWith(__dirname, pathToFile);
   });
 
   test('should return null if file does not exist', async () => {
